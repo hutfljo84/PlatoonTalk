@@ -11,8 +11,10 @@ import {
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from '@prisma/client';
+import { Unprotected } from 'nest-keycloak-connect';
 
 @Controller('category')
+@Unprotected()
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 

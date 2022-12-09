@@ -11,8 +11,10 @@ import {
 } from '@nestjs/common';
 import { UsergrpService } from './usergrp.service';
 import { Usergrp } from '@prisma/client';
+import { Unprotected } from 'nest-keycloak-connect';
 
 @Controller('usergrp')
+@Unprotected()
 export class UsergrpController {
   constructor(private readonly usergrpService: UsergrpService) {}
 

@@ -29,9 +29,9 @@ import { APP_GUARD } from '@nestjs/core';
   imports: [
     KeycloakConnectModule.register({
       authServerUrl: 'http://localhost:28080/auth',
-      realm: 'Demo-Realm',
+      realm: 'PlatoonTalk',
       clientId: 'nest-api',
-      secret: 'yU1jZK8VmefHOPZp9ALQoaUV0bPM1v0X',
+      secret: 'gZVpcFYJgNnjiOFhvupGXqGHFysnzDWq',
       logLevels: ['error'],
       policyEnforcement: PolicyEnforcementMode.ENFORCING,
       tokenValidation: TokenValidation.OFFLINE,

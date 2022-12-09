@@ -11,8 +11,10 @@ import {
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Posts } from '@prisma/client';
+import { Unprotected } from 'nest-keycloak-connect';
 
 @Controller('posts')
+@Unprotected()
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 

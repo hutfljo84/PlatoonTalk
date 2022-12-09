@@ -11,8 +11,10 @@ import {
 } from '@nestjs/common';
 import { SectionService } from './section.service';
 import { Section } from '@prisma/client';
+import { Unprotected } from 'nest-keycloak-connect';
 
 @Controller('section')
+@Unprotected()
 export class SectionController {
   constructor(private readonly sectionService: SectionService) {}
 

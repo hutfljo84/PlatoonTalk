@@ -11,8 +11,10 @@ import {
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { Event } from '@prisma/client';
+import { Unprotected } from 'nest-keycloak-connect';
 
 @Controller('event')
+@Unprotected()
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 

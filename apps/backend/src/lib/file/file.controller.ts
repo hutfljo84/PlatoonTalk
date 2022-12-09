@@ -11,8 +11,10 @@ import {
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { File } from '@prisma/client';
+import { Unprotected } from 'nest-keycloak-connect';
 
 @Controller('file')
+@Unprotected()
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
