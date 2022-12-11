@@ -1,63 +1,61 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { KeycloakClient } from "@react-keycloak/keycloak-ts";
-
-
-const keycloak = new KeycloakClient({
-  realm: 'realm',
-  clientId: 'id',
-  url: 'http://localhost:6969/auth'
-});
-
+import { createContext, useEffect, useState } from "react";
+import Keycloak, { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js';
+import { AuthContextValues, roles } from "../../main";
 
 // below is component stuff, above is keycloak stuff
 
-export interface AuthContextValues {
-  isAuthenticated: boolean;
-}
-
-const defaultAuthContextValues: AuthContextValues = {
-  isAuthenticated: false,
+/* eslint-disable-next-line */
+export interface AuthContextProviderProps {
+  keycloakClient: Keycloak;
+  initOptions: KeycloakInitOptions;
+  children: JSX.Element;
 }
 
 export const AuthContext = createContext<AuthContextValues>(
-  defaultAuthContextValues
+  {
+    isAuthenticated: false,
+    logout: () => {''},
+    username: undefined,
+  }
 );
-
-/* eslint-disable-next-line */
-export interface AuthContextProviderProps {
-  children: JSX.Element;
-}
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
   console.log('rendering AuthContextProvider');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [username, setUsername] = useState<string | undefined>(undefined);
+  const logout = () => {
+    props.keycloakClient.logout();
+  };
 
   // KeyCloak stuff
   useEffect(() => {
-    async function initializeKeycloak() {
-      console.log('initializing keycloak');
-      try {
-        const isAuthenticatedResponse = await keycloak.init(
-          {onLoad: 'login-required'}
-        );
-        if (!isAuthenticatedResponse) {
-          console.log('not authenticated. forwarding to login page');
-          keycloak.login();
-        }
-        console.log('user authenticated');
-        setIsAuthenticated(isAuthenticatedResponse);
-      } catch {
-        console.log('error initializing keycloak');
-        setIsAuthenticated(false);
-      }
+    function initializeKeycloak() {
+        console.log('initializing keycloak');
+        props.keycloakClient.init(
+          props.initOptions
+        ).then(auth => {
+          setIsAuthenticated(auth);
+        });
     }
 
-    initializeKeycloak();
+      initializeKeycloak();
+  }, []);
+
+  useEffect(() => {
+    function loadProfile() {
+        console.log('loading profile');
+        props.keycloakClient.loadUserProfile().then(profile => {
+          setUsername(profile.username);
+        });
+    }
+      if (isAuthenticated){
+        loadProfile();
+      }
   }, []);
   // KeyCloak stuff
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated }}>
+    <AuthContext.Provider value={{ isAuthenticated, username, logout}}>
       {props.children}
     </AuthContext.Provider>
   );
