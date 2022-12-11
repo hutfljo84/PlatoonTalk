@@ -1,17 +1,17 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Menu, MenuItem } from '@mui/material';
 import { display } from '@mui/system';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { AuthContext } from '../../app/AuthContextProvider/AuthContextProvider';
 import styles from './NavBar.module.scss';
 
 /* eslint-disable-next-line */
 export interface NavBarProps {}
 
 export function NavBar(props: NavBarProps) {
-  const [searchParams] = useSearchParams();
-  const authenticated =
-    searchParams.get('authenticated') === 'true' ? true : false;
+  const username = useContext(AuthContext).username;
+  const logout = useContext(AuthContext).logout;
 
   const [rosterAnchor, setRosterAnchor] = React.useState<null | HTMLElement>(
     null
@@ -34,11 +34,10 @@ export function NavBar(props: NavBarProps) {
       <div className={styles['link-row']}>
         <Link
           className={styles['link']}
-          to={`home${authenticated ? '?authenticated=true' : ''}`}
+          to={`home`}
         >
           <h3 style={{ fontWeight: 'bold', color: 'black' }}>PlatoonTalk</h3>
         </Link>
-        {authenticated ? (
           <h3
             onClick={(event) => handleClick(event, 'roster')}
             tabIndex={0}
@@ -47,50 +46,27 @@ export function NavBar(props: NavBarProps) {
             Roster
             <ArrowDropDownIcon />
           </h3>
-        ) : (
-          <></>
-        )}
-        {/* put menu drop down here */}
-        {authenticated ? (
           <Link
             className={styles['link']}
-            to={`files${authenticated ? '?authenticated=true' : ''}`}
+            to={`files`}
           >
             <h3>Files</h3>
           </Link>
-        ) : (
-          <></>
-        )}
-        {authenticated ? (
           <Link
             className={styles['link']}
-            to={`posts${authenticated ? '?authenticated=true' : ''}`}
+            to={`posts`}
           >
             <h3>Posts</h3>
           </Link>
-        ) : (
-          <></>
-        )}
       </div>
-      {authenticated ? (
         <h3
           tabIndex={0}
           onClick={(event) => handleClick(event, 'user')}
           className={styles['link-menu']}
         >
-          SGT Joshua Hutfless
+          {username ?? 'unknown user'}
           <ArrowDropDownIcon />
         </h3>
-      ) : (
-        <div className={styles['link-row']}>
-          <Link className={styles['link']} to={'login'}>
-            <h3>Login</h3>
-          </Link>
-          <Link className={styles['link']} to={'login'}>
-            <h3>Register</h3>
-          </Link>
-        </div>
-      )}
       <Menu
         id={'roster-menu'}
         anchorEl={rosterAnchor}
@@ -106,14 +82,14 @@ export function NavBar(props: NavBarProps) {
         >
           <Link
             className={styles['menu-item']}
-            to={`roster/1${authenticated ? '?authenticated=true' : ''}`}
+            to={`roster/1`}
             onClick={() => handleClose('roster')}
           >
             Headquarters
           </Link>
           <Link
             className={styles['menu-item']}
-            to={`roster/2${authenticated ? '?authenticated=true' : ''}`}
+            to={`roster/2`}
             onClick={() => handleClose('roster')}
           >
             1st Platoon
@@ -136,15 +112,15 @@ export function NavBar(props: NavBarProps) {
         >
           <Link
             className={styles['menu-item']}
-            to={`profile${authenticated ? '?authenticated=true' : ''}`}
+            to={`profile`}
             onClick={() => handleClose('user')}
           >
             Profile
           </Link>
           <Link
             className={styles['menu-item']}
-            to={'login'}
-            onClick={() => handleClose('user')}
+            to={'logout'}
+            onClick={logout}
           >
             Log out
           </Link>
