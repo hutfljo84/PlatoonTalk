@@ -1,5 +1,5 @@
 generator client {
-  provider      = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -7,110 +7,118 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id          String @id @default(cuid())
-  name        String
-  description String
-  image       String
-  price       Int
-  sku         String
-}
-
 model User {
-  id          Int @id @default(autoincrement())
-  usergrp     Int?
-  sectionId   Int?
-  rank        String
-  name        String
-  email       String
-  address1    String
-  address2    String?
-  city        String
-  state       String
-  postal      Int
-  phone       Int
-  passReset   Int
-  ftStaff     Int
-  lastActivity  DateTime?
-  createdAt   DateTime?
-  updatedAt   DateTime?
-  section Section? @relation(fields: [sectionId], references: [id])
-  userGrp Usergrp? @relation(fields: [usergrp], references: [id])
+  id           Int       @id @default(autoincrement())
+  usergrp      Int?
+  sectionId    Int?
+  rank         Rank      @default(PVT)
+  name         String    @db.VarChar(75)
+  email        String    @unique @db.VarChar(75)
+  address1     String    @db.VarChar(150)
+  address2     String?   @db.VarChar(150)
+  city         String    @db.VarChar(75)
+  state        String    @db.VarChar(75)
+  postal       Int
+  phone        Int
+  passReset    Int
+  ftStaff      Int
+  lastActivity DateTime? @updatedAt
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
+  section      Section?  @relation(fields: [sectionId], references: [id])
+  userGrp      Usergrp?  @relation(fields: [usergrp], references: [id])
 }
 
 model Category {
-  id          Int @id @default(autoincrement())
-  name        String
-  createdAt   DateTime?
-  updatedAt   DateTime?
-  files File[]
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(75)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  files     File[]
 }
 
 model Element {
-  id Int @id @default(autoincrement())
-  name String
-  createdAt DateTime?
-  updatedAt DateTime?
-  sections Section[]
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(75)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  sections  Section[]
 }
 
-model Posts{
-  id          Int @id @default(autoincrement())
-  title       String
-  content     String
-  createdAt   DateTime?
-  updatedAt   DateTime?
+model Posts {
+  id        Int       @id @default(autoincrement())
+  title     String    @db.VarChar(75)
+  content   String    @db.VarChar(2000)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
-model Usergrp{
-  id          Int @id @default(autoincrement())
-  name        String
-  description String?
-  locked      Int
-  can_access  Int
+model Usergrp {
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(75)
+  description   String?   @db.VarChar(300)
+  locked        Int
+  can_access    Int
   can_access_cp Int
-  createdAt DateTime?
-  updatedAt DateTime?
-  users User[]
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @updatedAt
+  users         User[]
 }
 
-model File{
-  id          Int @id @default(autoincrement())
-  categoryid  Int?
-  name  String
-  descriptions String?
-  featured  Int
-  createdAt DateTime?
-  updatedAt DateTime?
-  downloads Int
-  category Category? @relation(fields: [categoryid], references: [id])
+model File {
+  id           Int       @id @default(autoincrement())
+  categoryid   Int?
+  name         String    @db.VarChar(75)
+  descriptions String?   @db.VarChar(300)
+  featured     Int
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
+  downloads    Int
+  category     Category? @relation(fields: [categoryid], references: [id])
 }
 
-model Section{
-  id  Int @id @default(autoincrement())
+model Section {
+  id        Int       @id @default(autoincrement())
   elementid Int?
-  name  String
-  createdAt DateTime?
-  updatedAt DateTime?
-  users User[]
-  element Element? @relation(fields: [elementid], references: [id])
-
+  name      String    @db.VarChar(75)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  users     User[]
+  element   Element?  @relation(fields: [elementid], references: [id])
 }
 
-model Event{
-  id          Int @id @default(autoincrement())
-  type  String
-  short_Description String
-  all_company String?
-  headquarters  String?
-  first_platoon String?
-  sec_platoon String?
-  third_platoon String?
-  fourth_platoon  String?
-  maintenance String?
-  date_start  DateTime?
-  date_end  DateTime?
-  createdAt DateTime?
-  updatedAt DateTime?
+model Event {
+  id                Int       @id @default(autoincrement())
+  type              String    @db.VarChar(75)
+  short_Description String    @db.VarChar(300)
+  all_company       String?   @db.VarChar(75)
+  headquarters      String?   @db.VarChar(75)
+  first_platoon     String?   @db.VarChar(75)
+  sec_platoon       String?   @db.VarChar(75)
+  third_platoon     String?   @db.VarChar(75)
+  fourth_platoon    String?   @db.VarChar(75)
+  maintenance       String?   @db.VarChar(75)
+  date_start        DateTime?
+  date_end          DateTime?
+  createdAt         DateTime? @default(now())
+  updatedAt         DateTime? @updatedAt
 }
 
+enum Rank {
+  PVT
+  PFC
+  SPC
+  SGT
+  SSG
+  SFC
+  MSG
+  FSGT
+  CSM
+  SLT
+  FLT
+  CPT
+  MAJ
+  LTCOL
+  COL
+  GEN
+}
