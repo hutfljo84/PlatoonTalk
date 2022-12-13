@@ -39,7 +39,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     }
 
       initializeKeycloak();
-  }, []);
+  }, [props.initOptions, props.keycloakClient]);
 
   useEffect(() => {
     function loadProfile() {
@@ -51,7 +51,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       if (isAuthenticated){
         loadProfile();
       }
-  }, []);
+  }, [isAuthenticated, props.keycloakClient]);
   // KeyCloak stuff
 
   return (
