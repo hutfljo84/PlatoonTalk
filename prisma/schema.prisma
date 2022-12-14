@@ -27,6 +27,7 @@ model User {
   updatedAt    DateTime? @updatedAt
   section      Section?  @relation(fields: [sectionId], references: [id])
   userGrp      Usergrp?  @relation(fields: [usergrp], references: [id])
+  requestReg  Boolean?
 }
 
 model Category {
