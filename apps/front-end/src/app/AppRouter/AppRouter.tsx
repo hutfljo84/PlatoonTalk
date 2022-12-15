@@ -4,7 +4,6 @@ import {
   Navigate,
   Route,
   Routes,
-  useNavigate,
 } from 'react-router-dom';
 import Home from '../../lib/Home/Home';
 import LoginPage from '../../lib/LoginPage/LoginPage';
@@ -19,12 +18,11 @@ export function AppRouter(props: AppRouterProps) {
 // if api/user doesn't return user information, navigate to new-user page.
 // new user page will have a form to create db user info
 // once created this page will show a waiting screen, until an admin can add a role to their account
-const [newUser, setNewUser] = useState(true);
-const navigate = useNavigate();
+const [newUser, setNewUser] = useState(false);
 
 useEffect(() => {
   if (newUser) {
-    navigate('/new-user');
+    console.log(newUser)
   }
 });
 
