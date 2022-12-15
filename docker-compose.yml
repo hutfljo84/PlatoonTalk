@@ -43,10 +43,8 @@ services:
     container_name: local_keycloak
     ports:
       - '28080:8080'
-    volumes:
-      - ./current-realm-export.json:/tmp/current-realm-export.json:ro
+
     environment:
-      KEYCLOAK_IMPORT: /tmp/current-realm-export.json
       DB_VENDOR: postgres
       DB_ADDR: postgres
       DB_DATABASE: postgres
