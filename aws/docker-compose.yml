@@ -1,61 +1,65 @@
 version: '2'
 services:
   platoonfront:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    image: simkey84/platoontalk-front-end:dev
     cpu_shares: 100
-    mem_limit: 3621440000
-    environment:
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    mem_limit: 968435456
+    ports:
+      - 4200:4200
     logging:
       driver: awslogs
       options:
         awslogs-group: PlatoonTalk
         awslogs-region: us-east-1
-        awslogs-stream-prefix: es
+        awslogs-stream-prefix: ptf
 
   platoonback:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    image: simkey84/platoontalk-backend:dev
     cpu_shares: 100
-    mem_limit: 3621440000
-    environment:
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    mem_limit: 968435456
+    ports:
+      - 4310:3333 # API Entry port
+      - 4311:4311 # Server Debugging port
+      - 5556:5555
     logging:
       driver: awslogs
       options:
         awslogs-group: PlatoonTalk
         awslogs-region: us-east-1
-        awslogs-stream-prefix: es
+        awslogs-stream-prefix: ptb
 
   keycloak:
     image: jboss/keycloak:latest
     cpu_shares: 100
-    mem_limit: 3621440000
+    mem_limit: 768435456
     environment:
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_DATABASE: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    ports:
+      - '8080:8080'
     logging:
       driver: awslogs
       options:
         awslogs-group: PlatoonTalk
         awslogs-region: us-east-1
-        awslogs-stream-prefix: es
+        awslogs-stream-prefix: kc
 
-postgres:
-  image: postgres:latest
-  cpu_shares: 100
-  mem_limit: 3621440000
-  environment:
-    - discovery.type=single-node
-    - bootstrap.memory_lock=true
-    - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
-  logging:
-    driver: awslogs
-    options:
-      awslogs-group: PlatoonTalk
-      awslogs-region: us-east-1
-      awslogs-stream-prefix: es
+  postgres:
+    image: postgres:latest
+    cpu_shares: 100
+    mem_limit: 768435456
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: Todo
+    ports:
+      - 5432:5432
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: PlatoonTalk
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: pg
