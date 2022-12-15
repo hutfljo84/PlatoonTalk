@@ -1,0 +1,61 @@
+version: '2'
+services:
+  platoonfront:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    cpu_shares: 100
+    mem_limit: 3621440000
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: foodtrucks
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: es
+
+  platoonback:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    cpu_shares: 100
+    mem_limit: 3621440000
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: foodtrucks
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: es
+
+  keycloak:
+    image: jboss/keycloak:latest
+    cpu_shares: 100
+    mem_limit: 3621440000
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: PlatoonTalk
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: es
+
+postgres:
+  image: postgres:latest
+  cpu_shares: 100
+  mem_limit: 3621440000
+  environment:
+    - discovery.type=single-node
+    - bootstrap.memory_lock=true
+    - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+  logging:
+    driver: awslogs
+    options:
+      awslogs-group: PlatoonTalk
+      awslogs-region: us-east-1
+      awslogs-stream-prefix: es

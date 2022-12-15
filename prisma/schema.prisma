@@ -21,12 +21,13 @@ model User {
   postal       Int
   phone        Int
   passReset    Int
-  ftStaff      Int
+  ftStaff      FullTime @default(TPU)
   lastActivity DateTime? @updatedAt
   createdAt    DateTime? @default(now())
   updatedAt    DateTime? @updatedAt
   section      Section?  @relation(fields: [sectionId], references: [id])
   userGrp      Usergrp?  @relation(fields: [usergrp], references: [id])
+  requestReg  Boolean?
 }
 
 model Category {
@@ -55,11 +56,10 @@ model Posts {
 
 model Usergrp {
   id            Int       @id @default(autoincrement())
-  name          String    @db.VarChar(75)
+  name          Access    @default(USER)
   description   String?   @db.VarChar(300)
   locked        Int
-  can_access    Int
-  can_access_cp Int
+  access        Access    @default(USER)
   createdAt     DateTime? @default(now())
   updatedAt     DateTime? @updatedAt
   users         User[]
@@ -121,4 +121,14 @@ enum Rank {
   LTCOL
   COL
   GEN
+}
+
+enum Access {
+  ADMIN
+  LEADER
+  USER
+}
+enum FullTime {
+FULL
+TPU
 }
