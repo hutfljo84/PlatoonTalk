@@ -31,7 +31,7 @@ import { APP_GUARD } from '@nestjs/core';
       authServerUrl: 'http://localhost:28080/auth',
       realm: 'PlatoonTalk',
       clientId: 'nest-api',
-      secret: 'NR2Xy6raVsbsVvsj4c5prHQx1TyX5RiP',
+      secret: 'U5F3mIJ5uZl0vjyjbZMrhB5nTFuzEsbq',
       logLevels: ['error'],
       policyEnforcement: PolicyEnforcementMode.ENFORCING,
       tokenValidation: TokenValidation.OFFLINE,

@@ -11,7 +11,7 @@ services:
     logging:
       driver: awslogs
       options:
-        awslogs-group: foodtrucks
+        awslogs-group: PlatoonTalk
         awslogs-region: us-east-1
         awslogs-stream-prefix: es
 
@@ -26,7 +26,7 @@ services:
     logging:
       driver: awslogs
       options:
-        awslogs-group: foodtrucks
+        awslogs-group: PlatoonTalk
         awslogs-region: us-east-1
         awslogs-stream-prefix: es
 

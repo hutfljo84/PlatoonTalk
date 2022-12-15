@@ -37,33 +37,23 @@ services:
       - ./postgres-data:/var/lib/db/postgresql/data
     restart: unless-stopped
 
-  # pgadmin:
-  #   image: dpage/pgadmin4
-  #   container_name: pgadmin
-  #   depends_on:
-  #     - postgres
-  #   ports:
-  #     - 5555:80
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #   volumes:
-  #     - ./pgadmin-data:/var/lib/db/pgadmin
-  #   restart: unless-stopped
-
   keycloak:
     depends_on:
       - postgres
     container_name: local_keycloak
+    ports:
+      - '28080:8080'
+    volumes:
+      - ./current-realm-export.json:/tmp/current-realm-export.json:ro
     environment:
+      KEYCLOAK_IMPORT: /tmp/current-realm-export.json
       DB_VENDOR: postgres
       DB_ADDR: postgres
       DB_DATABASE: postgres
       DB_USER: postgres
       DB_PASSWORD: postgres
     image: jboss/keycloak:latest
-    ports:
-      - '28080:8080'
+
     restart: unless-stopped
 
 volumes:
