@@ -30,21 +30,20 @@ export interface User {
 export function Home(props: HomeProps) {
   const [users, setUsers] = useState<User[]>([]);
 
-  // TODO blocked by CORS, setup proxy to stop this
   useEffect(() => {
-    axios.get<{data: User[]}>('http://localhost:4310/api/user', {
+    axios.get<User[]>('http://localhost:4310/api/user', {
       headers: {
         Accept: 'application/json'
       }
     }).then((response) => {
-      setUsers(response.data.data);
-      console.log(response.data.data ?? 'no data');
-    })
+      const {data} = response;
+      setUsers(data ?? []);
+    }).catch(error => console.log(error));
   }, []);
 
   return (
     <div className={styles['container']}>
-      {users.map((user) => <div>{user.name}</div>)}
+      {users ? users.map((user) => <div>{user.name}</div>) : <></>}
     </div>
   );
 }
