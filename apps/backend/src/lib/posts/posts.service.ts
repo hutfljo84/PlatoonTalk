@@ -2,6 +2,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { Posts, Prisma } from '@prisma/client';
+import { throws } from 'assert';
 import { PrismaService } from '../../app/prisma.service';
 
 @Injectable()
@@ -17,6 +18,18 @@ export class PostsService {
   }
 
   async createPosts(data: Posts): Promise<Posts> {
+    let id: number | undefined = undefined;
+
+    await this.prisma.posts.findMany().then( (posts) => {
+      let index = 0
+      while (id === undefined) {
+        if (!posts.find(item => item.id === index)) {
+          id = index;
+        }
+        index += 1;
+      }
+      data.id = id;
+    })
     return this.prisma.posts.create({
       data,
     });

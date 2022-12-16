@@ -12,21 +12,24 @@
     flex-direction: column;
     gap: 0.25rem;
     align-items: center;
-    border: 1px grey solid;
+    border: 1px rgba(0, 0, 0, 0.2) solid;
     box-shadow: 5px 5px 10px grey;
+    border-radius:0.5rem;
+    overflow: hidden;
 
     .header {
-        width: 100%;
+        width: calc(100% - 2rem);
+        overflow: hidden;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        border-radius: 0.25rem;
         background-color: rgb(219, 215, 210);
         padding: 0.25rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
 
         .button-container {
-            opacity: 0;
             .button-group {
                 display: flex;
                 flex-direction: row;
@@ -35,18 +38,14 @@
             }
         }
     }
-    .header:hover {
-        .button-container {
-            opacity: 1;
-        }
-    }
+
     .body {
         padding: 1rem;
-        width: 100%;
+        width: calc(100% - 2rem);
     }
     .footer {
         padding: 1rem;
         color: rgb(75, 75, 168);
-        width: 100%;
+        width: calc(100% - 2rem);
     }
 }

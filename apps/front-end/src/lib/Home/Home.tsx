@@ -3,6 +3,7 @@ import styles from './Home.module.scss';
 import axios from 'axios';
 import { AuthContext } from '../../app/AuthContextProvider/AuthContextProvider';
 import PostItem, { Post } from '../../app/PostItem/PostItem';
+import { Button } from '@mui/material';
 
 /* eslint-disable-next-line */
 export interface HomeProps {}
@@ -31,6 +32,10 @@ export function Home(props: HomeProps) {
   // const [users, setUsers] = useState<User[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
   const authContext = useContext(AuthContext);
+  // add role to authContext
+  // TODO grab from keycloak
+  const [admin, setAdmin] = useState(true);
+  const [newPost, setNewPost] = useState(false);
 
   function getPosts() {
     axios.get<Post[]>('http://localhost:4310/api/posts', {
@@ -41,6 +46,7 @@ export function Home(props: HomeProps) {
     }).then((response) => {
       const {data} = response;
       setPosts(data ?? []);
+      setNewPost(false);
     }).catch(error => console.log(error));
   }
 
@@ -50,6 +56,13 @@ export function Home(props: HomeProps) {
 
   return (
     <div className={styles['container']}>
+      {admin ?
+      <div style={{width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', flexWrap: 'wrap'}}>
+        {newPost ? <Button onClick={() => setNewPost(false)}>cancel</Button>: <Button onClick={() => setNewPost(true)}>Add Post</Button>}
+        {newPost ? <PostItem post={undefined} reloadPosts={getPosts}/> : <></>}
+      </div> :
+      <></>
+      }
       {posts ? posts.map((post) => 
         <PostItem key={post.id} post={post} reloadPosts={getPosts}></PostItem>
       ) : <></>}
