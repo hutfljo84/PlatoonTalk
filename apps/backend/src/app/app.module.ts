@@ -26,6 +26,7 @@ import {
 import { APP_GUARD } from '@nestjs/core';
 import { PostsModule } from '../lib/posts/posts.module';
 import { PostsService } from '../lib/posts/posts.service';
+import { PostsController } from '../lib/posts/posts.controller';
 
 @Module({
   imports: [
@@ -40,7 +41,7 @@ import { PostsService } from '../lib/posts/posts.service';
     }),
   ],
   controllers: [
-    PostsModule,
+    PostsController,
     CategoryController,
     UserController,
     ElementController,
