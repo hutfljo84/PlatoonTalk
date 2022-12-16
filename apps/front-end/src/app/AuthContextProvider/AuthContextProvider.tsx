@@ -60,7 +60,6 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     console.log('grabbing token');
     function getAuthToken() {
       const token = props.keycloakClient.token;
-      console.log('token: ' + token);
       setAuthToken(token);
     }
 

@@ -51,7 +51,7 @@ export function Home(props: HomeProps) {
   return (
     <div className={styles['container']}>
       {posts ? posts.map((post) => 
-        <PostItem post={post} reloadPosts={getPosts}></PostItem>
+        <PostItem key={post.id} post={post} reloadPosts={getPosts}></PostItem>
       ) : <></>}
     </div>
   );
