@@ -16,6 +16,7 @@ export const AuthContext = createContext<AuthContextValues>(
     isAuthenticated: false,
     logout: () => {''},
     username: undefined,
+    token: undefined,
   }
 );
 
@@ -23,6 +24,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   console.log('rendering AuthContextProvider');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [username, setUsername] = useState<string | undefined>(undefined);
+  const [token, setAuthToken] = useState<string | undefined>(undefined);
   const logout = () => {
     props.keycloakClient.logout();
   };
@@ -54,8 +56,20 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }, [isAuthenticated, props.keycloakClient]);
   // KeyCloak stuff
 
+  useEffect(() => {
+    console.log('grabbing token');
+    function getAuthToken() {
+      const token = props.keycloakClient.token;
+      setAuthToken(token);
+    }
+
+    if (isAuthenticated) {
+      getAuthToken();
+    }
+  }, [isAuthenticated, props.keycloakClient])
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, username, logout}}>
+    <AuthContext.Provider value={{ isAuthenticated, username, logout, token}}>
       {props.children}
     </AuthContext.Provider>
   );

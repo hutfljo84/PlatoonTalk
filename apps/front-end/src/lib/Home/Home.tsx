@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styles from './Home.module.scss';
 import axios from 'axios';
+import { AuthContext } from '../../app/AuthContextProvider/AuthContextProvider';
+import PostItem, { Post } from '../../app/PostItem/PostItem';
 
 /* eslint-disable-next-line */
 export interface HomeProps {}
@@ -25,25 +27,32 @@ export interface User {
   updatedAt: Date | null
 }
 
-
-
 export function Home(props: HomeProps) {
-  const [users, setUsers] = useState<User[]>([]);
+  // const [users, setUsers] = useState<User[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const authContext = useContext(AuthContext);
 
-  useEffect(() => {
-    axios.get<User[]>('http://localhost:4310/api/user', {
+  function getPosts() {
+    axios.get<Post[]>('http://localhost:4310/api/posts', {
       headers: {
-        Accept: 'application/json'
+        Accept: 'application/json',
+        Authorization: ` Bearer ${authContext.token}`
       }
     }).then((response) => {
       const {data} = response;
-      setUsers(data ?? []);
+      setPosts(data ?? []);
     }).catch(error => console.log(error));
+  }
+
+  useEffect(() => {
+    getPosts();
   }, []);
 
   return (
     <div className={styles['container']}>
-      {users ? users.map((user) => <div>{user.name}</div>) : <></>}
+      {posts ? posts.map((post) => 
+        <PostItem key={post.id} post={post} reloadPosts={getPosts}></PostItem>
+      ) : <></>}
     </div>
   );
 }

@@ -1,0 +1,52 @@
+/*
+ * Replace this with your own classes
+ *
+ * e.g.
+ * .container {
+ * }
+*/
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: center;
+    border: 1px grey solid;
+    box-shadow: 5px 5px 10px grey;
+
+    .header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 0.25rem;
+        background-color: rgb(219, 215, 210);
+        padding: 0.25rem;
+
+        .button-container {
+            opacity: 0;
+            .button-group {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 0.25rem;
+            }
+        }
+    }
+    .header:hover {
+        .button-container {
+            opacity: 1;
+        }
+    }
+    .body {
+        padding: 1rem;
+        width: 100%;
+    }
+    .footer {
+        padding: 1rem;
+        color: rgb(75, 75, 168);
+        width: 100%;
+    }
+}
