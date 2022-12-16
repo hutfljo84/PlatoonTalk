@@ -33,6 +33,11 @@ export class SectionController {
     return this.sectionService.getSectionBy(id);
   }
 
+  @Get('element/:id')
+  async getSectionsByElementId(@Param('id') id: number): Promise<Section[] | null> {
+    return this.sectionService.getSectionsByElementId(id);
+  }
+
   @Put(':id')
   async Update(@Param('id') id: number): Promise<Section> {
     return this.sectionService.updateSection(id);

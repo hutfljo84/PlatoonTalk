@@ -8,6 +8,7 @@ import {
 import Home from '../../lib/Home/Home';
 import LoginPage from '../../lib/LoginPage/LoginPage';
 import App from '../app';
+import Roster from '../Roster/Roster';
 
 /* eslint-disable-next-line */
 export interface AppRouterProps {}
@@ -64,8 +65,7 @@ useEffect(() => {
             <Route path={'events'} element={<div>posts</div>}>
               <Route path={':eventid'} />
             </Route>
-            <Route path={'roster'} element={<div>roster</div>}>
-              <Route path={':group'} element={<div></div>} />
+            <Route path={'roster/:id'} element={<Roster />}>
             </Route>
             <Route path={'profile'} element={<div>profile</div>} />
           </Route>

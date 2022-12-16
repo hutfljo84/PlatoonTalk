@@ -16,6 +16,10 @@ export class SectionService {
     return this.prisma.section.findUnique({ where: { id: Number(id) } });
   }
 
+  async getSectionsByElementId(id: number): Promise<Section[] | null> {
+    return this.prisma.section.findMany({where: { elementid: Number(id)}});
+  }
+
   async createSection(data: Section): Promise<Section> {
     return this.prisma.section.create({
       data,

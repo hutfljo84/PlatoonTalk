@@ -1,17 +1,32 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Menu, MenuItem } from '@mui/material';
 import { display } from '@mui/system';
-import React, { useContext } from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { AuthContext } from '../../app/AuthContextProvider/AuthContextProvider';
+import { El } from '../../app/Roster/Roster';
 import styles from './NavBar.module.scss';
 
 /* eslint-disable-next-line */
 export interface NavBarProps {}
 
 export function NavBar(props: NavBarProps) {
-  const username = useContext(AuthContext).username;
+  const authContext = useContext(AuthContext);
   const logout = useContext(AuthContext).logout;
+  const [elements, setElements] = useState<El[]>([])
+
+  useEffect(() => {
+    axios.get<El[]>('http://localhost:4310/api/element', {
+      headers: {
+        Accept: 'application/json',
+        Authorization: ` Bearer ${authContext.token}`
+      }
+    }).then((response) => {
+      const {data} = response;
+      setElements(data ?? []);
+    }).catch(error => console.log(error));
+  }, [authContext]);
 
   const [rosterAnchor, setRosterAnchor] = React.useState<null | HTMLElement>(
     null
@@ -64,7 +79,7 @@ export function NavBar(props: NavBarProps) {
           onClick={(event) => handleClick(event, 'user')}
           className={styles['link-menu']}
         >
-          {username ?? 'unknown user'}
+          {authContext.username ?? 'unknown user'}
           <ArrowDropDownIcon />
         </h3>
       <Menu
@@ -80,20 +95,16 @@ export function NavBar(props: NavBarProps) {
             minWidth: '15rem',
           }}
         >
-          <Link
+          {elements.map((element: El) =>
+            <Link
             className={styles['menu-item']}
-            to={`roster/1`}
+            to={`roster/${element.id}`}
             onClick={() => handleClose('roster')}
-          >
-            Headquarters
-          </Link>
-          <Link
-            className={styles['menu-item']}
-            to={`roster/2`}
-            onClick={() => handleClose('roster')}
-          >
-            1st Platoon
-          </Link>
+            >
+              {element.name}
+            </Link>
+            )
+          }
         </div>
       </Menu>
 
