@@ -12,8 +12,11 @@ import {
 import { UserService } from './user.service';
 import { User } from '@prisma/client';
 import { Roles, Unprotected } from 'nest-keycloak-connect';
+import { ApiTags } from '@nestjs/swagger';
+import { createUserDto } from '../dto/createUserDto';
 
 @Controller('user')
+@ApiTags('users')
 @Unprotected()
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -24,8 +27,8 @@ export class UserController {
   }
 
   @Post()
-  async createUser(@Body() postData: User): Promise<User> {
-    return this.userService.createUser(postData);
+  async createUser(@Body() createUserDto: createUserDto): Promise<User> {
+    return this.userService.createUser(createUserDto);
   }
 
   @Get(':id')

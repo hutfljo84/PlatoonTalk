@@ -19,9 +19,12 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^6.1.4",
     "@prisma/client": "^4.6.1",
     "@react-keycloak/keycloak-ts": "^0.2.4",
     "axios": "^1.2.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "core-js": "^3.6.5",
     "keycloak-connect": "^18.0.2",
     "keycloak-js": "^20.0.1",
@@ -32,7 +35,9 @@
     "react-router-dom": "^6.4.4",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
-    "rxjs": "^7.0.0"
+    "rxjs": "^7.0.0",
+    "sanitize-html": "^2.8.0",
+    "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
     "@nestjs/schematics": "^9.0.0",
@@ -53,6 +58,7 @@
     "@types/node": "18.7.1",
     "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6",
+    "@types/sanitize-html": "^2.8.0",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "babel-jest": "28.1.1",

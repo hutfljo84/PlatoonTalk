@@ -3,6 +3,7 @@ version: '3'
 services:
   # React App
   front-end:
+    container_name: front-end
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
@@ -12,6 +13,7 @@ services:
 
   # Nest App
   backend:
+    container_name: backend
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
@@ -26,31 +28,37 @@ services:
 
   postgres:
     image: postgres:latest
+    container_name: postgres
     hostname: postgres
     ports:
       - 5432:5432
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
       POSTGRES_DB: Todo
     volumes:
       - ./postgres-data:/var/lib/db/postgresql/data
     restart: unless-stopped
 
   keycloak:
+    image: jboss/keycloak:latest
+    container_name: keycloak
     depends_on:
       - postgres
-    container_name: local_keycloak
+
     ports:
       - '28080:8080'
-
     environment:
       DB_VENDOR: postgres
       DB_ADDR: postgres
       DB_DATABASE: postgres
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-    image: jboss/keycloak:latest
+      DB_USER: ${PG_USER}
+      DB_PASSWORD: ${PG_PASS}
+      KEYCLOAK_USER: ${USER_KC}
+      KEYCLOAK_PASSWORD: ${PASS_KC}
+      KEYCLOAK_IMPORT: /tmp/realm-export.json
+    volumes:
+      - ./realm-export.json:/tmp/realm-export.json
 
     restart: unless-stopped
 

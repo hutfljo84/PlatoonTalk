@@ -2,7 +2,7 @@ version: '2'
 
 services:
   platoonfront:
-    image: simkey84/platoontalk-front-end:dev
+    image: simkey84/front-end:dev
     cpu_shares: 100
     mem_limit: 968435456
     ports:
@@ -11,26 +11,23 @@ services:
       driver: awslogs
       options:
         awslogs-group: PlatoonTalk
-        awslogs-region: us-east-2
+        awslogs-region: us-east-1
         awslogs-stream-prefix: ptf
 
-  # platoonback:
-  #   image: simkey84/platoontalk-backend:dev
-  #   cpu_shares: 100
-  #   mem_limit: 968435456
-  #   ports:
-  #     - 4310:3333 # API Entry port
-  #     - 4311:4311 # Server Debugging port
-  #     - 5556:5555 # studio
-  #   volumes:
-  #     - /app/node_modules
-  #     - server:/app
-  #   logging:
-  #     driver: awslogs
-  #     options:
-  #       awslogs-group: PlatoonTalk
-  #       awslogs-region: us-east-2
-  #       awslogs-stream-prefix: ptb
+  platoonback:
+    image: simkey84/backend:dev
+    cpu_shares: 100
+    mem_limit: 968435456
+    ports:
+      - 4310:3333 # API Entry port
+      - 4311:4311 # Server Debugging port
+      - 5556:5555 # studio
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: PlatoonTalk
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: ptb
 
   # keycloak:
   #   image: jboss/keycloak:latest
@@ -48,28 +45,23 @@ services:
   #     driver: awslogs
   #     options:
   #       awslogs-group: PlatoonTalk
-  #       awslogs-region: us-east-2
+  #       awslogs-region: us-east-1
   #       awslogs-stream-prefix: kc
 
-  # postgres:
-  #   image: postgres:latest
-  #   restart: always
-  #   # volumes:
-  #   #   - postgres-data:/var/lib/db/postgresql/data
-  #   cpu_shares: 100
-  #   mem_limit: 968435456
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #     POSTGRES_DB: Todo
-  #   ports:
-  #     - 5432:5432
-  #   logging:
-  #     driver: awslogs
-  #     options:
-  #       awslogs-group: PlatoonTalk
-  #       awslogs-region: us-east-2
-  #       awslogs-stream-prefix: pg
-# volumes:
-#   - client
-#   - server
+  postgres:
+    image: postgres:latest
+    restart: always
+    cpu_shares: 100
+    mem_limit: 968435456
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: Todo
+    ports:
+      - 5432:5432
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: PlatoonTalk
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: pg
