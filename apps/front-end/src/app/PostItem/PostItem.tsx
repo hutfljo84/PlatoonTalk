@@ -54,7 +54,7 @@ export function PostItem(props: PostItemProps) {
       {
         headers: {
           Accept: 'application/json',
-          Authorization: ` Bearer ${authContext.token}`
+          Authorization: `Bearer ${authContext.token}`
         }
       }).then(() => {
         props.reloadPosts();
@@ -68,7 +68,7 @@ export function PostItem(props: PostItemProps) {
       axios.delete<Post[]>(`http://localhost:4310/api/posts/${props.post?.id}`, {
         headers: {
           Accept: 'application/json',
-          Authorization: ` Bearer ${authContext.token}`
+          Authorization: `Bearer ${authContext.token}`
         }
       }).then(() => {
         props.reloadPosts();
@@ -104,7 +104,7 @@ export function PostItem(props: PostItemProps) {
       }, {
         headers: {
           Accept: 'application/json',
-          Authorization: ` Bearer ${authContext.token}`
+          Authorization: `Bearer ${authContext.token}`
         }
       }).then(() => {
         props.reloadPosts();
