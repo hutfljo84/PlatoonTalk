@@ -33,9 +33,9 @@ export class PostsController {
     return this.postsService.getPostsBy(id);
   }
 
-  @Put(':id')
-  async Update(@Param('id') id: number): Promise<Posts> {
-    return this.postsService.updatePosts(id);
+  @Put()
+  async Update(@Param('id') postData: Posts): Promise<Posts> {
+    return this.postsService.updatePosts(postData);
   }
   @Delete(':id')
   async Delete(@Param('id') id: number): Promise<Posts> {

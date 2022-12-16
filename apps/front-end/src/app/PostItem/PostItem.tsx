@@ -8,6 +8,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import DoneIcon from '@mui/icons-material/Done';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { height } from '@mui/system';
 
 export type Post = {
   id: number
@@ -28,7 +29,8 @@ export interface PostItemProps {
 export function PostItem(props: PostItemProps) {
   // add role to authContext
   const authContext = useContext(AuthContext);
-  const [admin, setAdmin] = useState(false);
+  // TODO grab from keycloak
+  const [admin, setAdmin] = useState(true);
   const [editing, setEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(props.post.title);
   const [editedContent, setEditedContent] = useState(props.post.content);
@@ -51,7 +53,7 @@ export function PostItem(props: PostItemProps) {
   }
 
   const postPost = () => {
-    axios.post<Post[]>(`http://localhost:4310/api/posts/${props.post.id}`, postBuilder, {
+    axios.put<Post[]>(`http://localhost:4310/api/posts`, postBuilder, {
       headers: {
         Accept: 'application/json',
         Authorization: ` Bearer ${authContext.token}`
@@ -75,19 +77,19 @@ export function PostItem(props: PostItemProps) {
   return (
     <div className={styles['container']}>
       <div className={styles['header']}>
-         {editing ? <TextField value={editedTitle} onChange={updateTitle}></TextField> : <h1>{props.post.title}</h1>}
+         {editing ? <TextField sx={{width: '70%', backgroundColor: 'white'}} value={editedTitle} onChange={updateTitle}></TextField> : <h1>{props.post.title}</h1>}
         { admin ? 
           <div className={styles['button-container']}>
-            {editing ? 
+            {!editing ? 
               <div className={styles['button-group']}><IconButton onClick={() => setEditing(true)}><EditIcon /></IconButton><IconButton onClick={deletePost}><DeleteIcon /></IconButton></div> : 
               <div className={styles['button-group']}><IconButton onClick={postPost}><DoneIcon /></IconButton><IconButton onClick={() => setEditing(false)}><ClearIcon /></IconButton></div>}
           </div> : 
           <></>}
       </div>
       <div className={styles['body']}>
-        {editing ? <TextField value={editedContent} onChange={updateContent}></TextField> : <div>{props.post.content}</div>}
+        {editing ? <TextField sx={{width: '100%', height: '5rem'}} value={editedContent} onChange={updateContent}></TextField> : <div>{props.post.content}</div>}
       </div>
-      <div className={styles['footer']}>{`Last Updated: ${props.post.updatedAt ? props.post.updatedAt?.toDateString() : 'N/A'}`}</div>
+      <div className={styles['footer']}>{`Last Updated: ${props.post.updatedAt ? props.post.updatedAt?.toString() : 'N/A'}`}</div>
     </div>
   );
 }

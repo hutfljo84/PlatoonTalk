@@ -22,10 +22,10 @@ export class PostsService {
     });
   }
 
-  async updatePosts(id: number): Promise<Posts> {
+  async updatePosts(data: Posts): Promise<Posts> {
     return this.prisma.posts.update({
-      where: { id: Number(id) },
-      data: {},
+      where: { id: Number(data.id) },
+      data: data,
     });
   }
 
