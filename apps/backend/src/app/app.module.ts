@@ -24,6 +24,8 @@ import {
   TokenValidation,
 } from 'nest-keycloak-connect';
 import { APP_GUARD } from '@nestjs/core';
+import { PostsModule } from '../lib/posts/posts.module';
+import { PostsService } from '../lib/posts/posts.service';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { APP_GUARD } from '@nestjs/core';
     }),
   ],
   controllers: [
+    PostsModule,
     CategoryController,
     UserController,
     ElementController,
@@ -56,6 +59,7 @@ import { APP_GUARD } from '@nestjs/core';
       provide: APP_GUARD,
       useClass: RoleGuard, // Global Role Guard
     },
+    PostsService,
     CategoryService,
     UserService,
     ElementService,
