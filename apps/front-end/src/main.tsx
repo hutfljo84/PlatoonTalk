@@ -27,6 +27,7 @@ export interface AuthContextValues {
   isAuthenticated: boolean;
   username: string | undefined;
   logout: () => void;
+  token: string | undefined;
 }
 
 root.render(

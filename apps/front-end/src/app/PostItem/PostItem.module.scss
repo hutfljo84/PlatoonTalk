@@ -1,0 +1,45 @@
+/*
+ * Replace this with your own classes
+ *
+ * e.g.
+ * .container {
+ * }
+*/
+
+.container {
+    width: 90%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: center;
+
+    .header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        .button-container {
+            opacity: 0;
+            .button-group {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 0.25rem;
+            }
+        }
+    }
+    .header:hover {
+        .button-container {
+            opacity: 1;
+        }
+    }
+    .body {
+        width: 90%;
+    }
+    .footer {
+        width: 90%;
+    }
+}
