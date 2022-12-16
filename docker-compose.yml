@@ -3,14 +3,19 @@ version: '3'
 services:
   # React App
   front-end:
-    image: simkey84/platoontalk-front-end:dev
+    extends:
+      file: docker-compose.base.yml
+      service: nx-app-base
     command: npm run front-end:dev:docker
     ports:
       - 4200:4200
 
   # Nest App
   backend:
-    image: simkey84/platoontalk-backend:dev
+    extends:
+      file: docker-compose.base.yml
+      service: nx-app-base
+    command: npm run backend:dev:docker
     ports:
       - 4310:3333 # API Entry port
       - 4311:4311 # Server Debugging port
