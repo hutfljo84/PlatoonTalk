@@ -25,7 +25,6 @@ export class SectionController {
   }
 
   @Post()
-  @Roles({ roles: ['app-admin'] })
   async createSection(@Body() postData: Section): Promise<Section> {
     return this.sectionService.createSection(postData);
   }
@@ -45,12 +44,10 @@ export class SectionController {
   }
 
   @Put(':id')
-  @Roles({ roles: ['app-admin'] })
   async Update(@Param('id') id: number): Promise<Section> {
     return this.sectionService.updateSection(id);
   }
   @Delete(':id')
-  @Roles({ roles: ['app-admin'] })
   async Delete(@Param('id') id: number): Promise<Section> {
     return this.sectionService.deleteSection(id);
   }
