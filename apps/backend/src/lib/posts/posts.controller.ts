@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Posts } from '@prisma/client';
-import { Roles } from 'nest-keycloak-connect';
+import { Roles, Unprotected } from 'nest-keycloak-connect';
 import { ApiTags } from '@nestjs/swagger';
 import { createPostDto } from '../dto/createPostsDto';
 
@@ -21,19 +21,19 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  @Roles({ roles: ['app-user', 'app-admin'] })
+  @Unprotected()
   async getAllPosts(): Promise<Posts[]> {
     return this.postsService.getPosts();
   }
 
   @Post()
-  @Roles({ roles: ['app-admin'] })
+  @Unprotected()
   async createPosts(@Body() createPostDto: createPostDto): Promise<Posts> {
     return this.postsService.createPosts(createPostDto);
   }
 
   @Get(':id')
-  @Roles({ roles: ['app-user', 'app-admin'] })
+  @Unprotected()
   async getPostsBy(@Param('id') id: number): Promise<Posts | null> {
     return this.postsService.getPostsBy(id);
   }
@@ -45,7 +45,7 @@ export class PostsController {
   }
 
   @Delete(':id')
-  @Roles({ roles: ['app-admin'] })
+  @Roles({ roles: ['app-user'] })
   async Delete(@Param('id') id: number): Promise<Posts> {
     return this.postsService.deletePosts(id);
   }

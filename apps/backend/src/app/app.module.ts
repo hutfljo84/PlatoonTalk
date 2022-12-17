@@ -24,7 +24,6 @@ import {
   TokenValidation,
 } from 'nest-keycloak-connect';
 import { APP_GUARD } from '@nestjs/core';
-import { PostsModule } from '../lib/posts/posts.module';
 import { PostsService } from '../lib/posts/posts.service';
 import { PostsController } from '../lib/posts/posts.controller';
 
@@ -34,10 +33,10 @@ import { PostsController } from '../lib/posts/posts.controller';
       authServerUrl: 'http://localhost:28080/auth',
       realm: 'PlatoonTalk',
       clientId: 'nest-api',
-      secret: 'U5F3mIJ5uZl0vjyjbZMrhB5nTFuzEsbq',
+      secret: 'gsD0eEsnZ4HVUldgH6mXJWMbBC9BKX7v',
       logLevels: ['error'],
       policyEnforcement: PolicyEnforcementMode.ENFORCING,
-      tokenValidation: TokenValidation.OFFLINE,
+      tokenValidation: TokenValidation.ONLINE,
     }),
   ],
   controllers: [

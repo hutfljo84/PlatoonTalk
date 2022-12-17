@@ -1,6 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from 'react';
 import Keycloak, { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js';
-import { AuthContextValues, roles } from "../../main";
+import { AuthContextValues, roles } from '../../main';
 
 // below is component stuff, above is keycloak stuff
 
@@ -11,14 +11,14 @@ export interface AuthContextProviderProps {
   children: JSX.Element;
 }
 
-export const AuthContext = createContext<AuthContextValues>(
-  {
-    isAuthenticated: false,
-    logout: () => {''},
-    username: undefined,
-    token: undefined,
-  }
-);
+export const AuthContext = createContext<AuthContextValues>({
+  isAuthenticated: false,
+  logout: () => {
+    ('');
+  },
+  username: undefined,
+  token: undefined,
+});
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
   console.log('rendering AuthContextProvider');
@@ -32,27 +32,25 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   // KeyCloak stuff
   useEffect(() => {
     function initializeKeycloak() {
-        console.log('initializing keycloak');
-        props.keycloakClient.init(
-          props.initOptions
-        ).then(auth => {
-          setIsAuthenticated(auth);
-        });
+      console.log('initializing keycloak');
+      props.keycloakClient.init(props.initOptions).then((auth) => {
+        setIsAuthenticated(auth);
+      });
     }
 
-      initializeKeycloak();
+    initializeKeycloak();
   }, [props.initOptions, props.keycloakClient]);
 
   useEffect(() => {
     function loadProfile() {
-        console.log('loading profile');
-        props.keycloakClient.loadUserProfile().then(profile => {
-          setUsername(profile.username);
-        });
+      console.log('loading profile');
+      props.keycloakClient.loadUserProfile().then((profile) => {
+        setUsername(profile.username);
+      });
     }
-      if (isAuthenticated){
-        loadProfile();
-      }
+    if (isAuthenticated) {
+      loadProfile();
+    }
   }, [isAuthenticated, props.keycloakClient]);
   // KeyCloak stuff
 
@@ -61,15 +59,16 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     function getAuthToken() {
       const token = props.keycloakClient.token;
       setAuthToken(token);
+      console.log(token);
     }
 
     if (isAuthenticated) {
       getAuthToken();
     }
-  }, [isAuthenticated, props.keycloakClient])
+  }, [isAuthenticated, props.keycloakClient]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, username, logout, token}}>
+    <AuthContext.Provider value={{ isAuthenticated, username, logout, token }}>
       {props.children}
     </AuthContext.Provider>
   );

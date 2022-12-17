@@ -14,18 +14,21 @@ export interface NavBarProps {}
 export function NavBar(props: NavBarProps) {
   const authContext = useContext(AuthContext);
   const logout = useContext(AuthContext).logout;
-  const [elements, setElements] = useState<El[]>([])
+  const [elements, setElements] = useState<El[]>([]);
 
   useEffect(() => {
-    axios.get<El[]>('http://localhost:4310/api/element', {
-      headers: {
-        Accept: 'application/json',
-        Authorization: ` Bearer ${authContext.token}`
-      }
-    }).then((response) => {
-      const {data} = response;
-      setElements(data ?? []);
-    }).catch(error => console.log(error));
+    axios
+      .get<El[]>('http://localhost:4310/api/element', {
+        headers: {
+          Accept: 'application/json',
+          Authorization: ` Bearer ${authContext.token}`,
+        },
+      })
+      .then((response) => {
+        const { data } = response;
+        setElements(data ?? []);
+      })
+      .catch((error) => console.log(error));
   }, [authContext]);
 
   const [rosterAnchor, setRosterAnchor] = React.useState<null | HTMLElement>(
@@ -47,41 +50,29 @@ export function NavBar(props: NavBarProps) {
   return (
     <div className={styles['container']}>
       <div className={styles['link-row']}>
-        <Link
-          className={styles['link']}
-          to={`home`}
-        >
+        <Link className={styles['link']} to={`home`}>
           <h3 style={{ fontWeight: 'bold', color: 'black' }}>PlatoonTalk</h3>
         </Link>
-          <h3
-            onClick={(event) => handleClick(event, 'roster')}
-            tabIndex={0}
-            className={styles['link-menu']}
-          >
-            Roster
-            <ArrowDropDownIcon />
-          </h3>
-          <Link
-            className={styles['link']}
-            to={`files`}
-          >
-            <h3>Files</h3>
-          </Link>
-          <Link
-            className={styles['link']}
-            to={`posts`}
-          >
-            <h3>Posts</h3>
-          </Link>
-      </div>
         <h3
+          onClick={(event) => handleClick(event, 'roster')}
           tabIndex={0}
-          onClick={(event) => handleClick(event, 'user')}
           className={styles['link-menu']}
         >
-          {authContext.username ?? 'unknown user'}
+          Roster
           <ArrowDropDownIcon />
         </h3>
+        <Link className={styles['link']} to={`files`}>
+          <h3>Files</h3>
+        </Link>
+      </div>
+      <h3
+        tabIndex={0}
+        onClick={(event) => handleClick(event, 'user')}
+        className={styles['link-menu']}
+      >
+        {authContext.username ?? 'unknown user'}
+        <ArrowDropDownIcon />
+      </h3>
       <Menu
         id={'roster-menu'}
         anchorEl={rosterAnchor}
@@ -95,16 +86,15 @@ export function NavBar(props: NavBarProps) {
             minWidth: '15rem',
           }}
         >
-          {elements.map((element: El) =>
+          {elements.map((element: El) => (
             <Link
-            className={styles['menu-item']}
-            to={`roster/${element.id}`}
-            onClick={() => handleClose('roster')}
+              className={styles['menu-item']}
+              to={`roster/${element.id}`}
+              onClick={() => handleClose('roster')}
             >
               {element.name}
             </Link>
-            )
-          }
+          ))}
         </div>
       </Menu>
 
@@ -128,11 +118,7 @@ export function NavBar(props: NavBarProps) {
           >
             Profile
           </Link>
-          <Link
-            className={styles['menu-item']}
-            to={'logout'}
-            onClick={logout}
-          >
+          <Link className={styles['menu-item']} to={'logout'} onClick={logout}>
             Log out
           </Link>
         </div>

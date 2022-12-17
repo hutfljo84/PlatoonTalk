@@ -4,14 +4,13 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  IsPhoneNumber,
   IsString,
+  Max,
   MaxLength,
+  Min,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { FullTime, Rank, Section, Usergrp } from '.prisma/client';
-import { Transform } from 'class-transformer';
-import sanitizeHtml from 'sanitize-html';
 
 export class createUserDto {
   // Validates for a non-empty string
@@ -28,58 +27,62 @@ export class createUserDto {
   public sectionId!: number;
 
   @IsEnum(Rank)
+  @IsNotEmpty()
   @ApiProperty()
   public rank!: Rank;
 
   // Validates for a non-empty integer array
   @IsString()
   @MaxLength(75)
-  @Transform((value: any) => sanitizeHtml(value))
+  @IsNotEmpty()
   @ApiProperty()
   public name!: string;
 
   @IsString()
   @IsEmail()
+  @IsNotEmpty()
   @ApiProperty()
   public email!: string;
 
   @IsString()
   @MaxLength(150)
-  @Transform((value: any) => sanitizeHtml(value))
+  @IsNotEmpty()
   @ApiProperty()
   public address1!: string;
 
   @IsString()
   @MaxLength(150)
-  @Transform((value: any) => sanitizeHtml(value))
   @ApiProperty()
   public address2!: string;
 
   @IsString()
-  @Transform((value: any) => sanitizeHtml(value))
+  @IsNotEmpty()
   @ApiProperty()
   public city!: string;
 
   @IsString()
-  @Transform((value: any) => sanitizeHtml(value))
+  @IsNotEmpty()
   @ApiProperty()
   public state!: string;
 
   @IsNumber()
-  @MaxLength(5)
+  @Max(99999)
+  @Min(0)
+  @IsNotEmpty()
   @ApiProperty()
   public postal!: number;
 
   @IsString()
-  @Transform((value: any) => sanitizeHtml(value))
-  @IsPhoneNumber('US')
+  @IsNotEmpty()
   public phone!: string;
 
   @IsNumber()
+  @IsNotEmpty()
   @ApiProperty()
   public passReset!: number;
 
   @IsEnum(FullTime)
+  @IsNotEmpty()
   @ApiProperty()
   public ftStaff!: FullTime;
 
